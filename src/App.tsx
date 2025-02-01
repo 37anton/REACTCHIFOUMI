@@ -1,22 +1,21 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import GamePage from "./pages/GamePage";
-import MatchPage from "./pages/MatchPage"; // La page qui affiche une partie
-
-const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { token } = useAuth();
-  return token ? children : <Navigate to="/auth" />;
-};
+import MatchPage from "./pages/MatchPage";
 
 const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <Navbar />
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/" element={<ProtectedRoute>{<GamePage />}</ProtectedRoute>} />
-          <Route path="/matches/:id" element={<ProtectedRoute><MatchPage /></ProtectedRoute>} />
+          <Route path="/matches" element={<GamePage />} />
+          <Route path="/matches/:id" element={<MatchPage />} />
         </Routes>
       </Router>
     </AuthProvider>
