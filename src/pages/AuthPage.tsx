@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css"; // Import des styles Notyf
+
+const notyf = new Notyf({
+  duration: 3000, // Durée d'affichage des notifications
+  position: { x: "right", y: "top" }, // Position en haut à droite
+});
 
 const AuthPage = () => {
   const { login } = useAuth();
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleAuth = async () => {
-    setError("");
     const endpoint = isRegister ? "/register" : "/login";
 
     try {
@@ -27,8 +32,13 @@ const AuthPage = () => {
       }
 
       login(data.token);
+      
+      // Affichage d'une notification en cas de succès
+      notyf.success(isRegister ? "Compte créé avec succès !" : "Connexion réussie !");
+
     } catch (err: any) {
-      setError(err.message);
+      // Affichage de l'erreur avec Notyf
+      notyf.error(err.message);
     }
   };
 
@@ -38,8 +48,6 @@ const AuthPage = () => {
         <h2 className="text-xl font-bold mb-4 text-center">
           {isRegister ? "Inscription" : "Connexion"}
         </h2>
-
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
         <input
           type="text"
