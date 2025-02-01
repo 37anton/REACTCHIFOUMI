@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Notyf } from "notyf";
-import "notyf/notyf.min.css"; // Import des styles Notyf
+import { notyf } from "../utils/notyf";
 
-const notyf = new Notyf({
-  duration: 3000, // Durée d'affichage des notifications
-  position: { x: "right", y: "top" }, // Position en haut à droite
-});
 
 const AuthPage = () => {
   const { login } = useAuth();
